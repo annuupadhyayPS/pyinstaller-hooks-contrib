@@ -78,10 +78,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       py: /opt/python/${{ matrix.pyver }}/bin/python
+      img: quay.io/pypa/manylinux2014_aarch64
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
-    
+      uses: actions/checkout@v2    
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Checkout submodules
+      run: |
+        git submodule init
+        git submodule update
     - name: Set up QEMU
       id: qemu
       uses: docker/setup-qemu-action@v1
@@ -89,15 +97,16 @@ jobs:
     - name: Install all dependencies
       run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
-            quay.io/pypa/manylinux2014_aarch64 \
-            bash -exc 'yum install -y libxcb-xkb-dev xvfb && \
-            yum install -y libmariadbclient-dev && \
-            ${{ env.py }} -m venv .env && \
-            source .env/bin/activate && \
-            python -m pip install --upgrade pip setuptools wheel && \
-            pip install -e . && \
-            pip install --prefer-binary -r requirements-test-libraries.txt && \
-            pip install ${{ matrix.pyinstaller }} && \
-            pip install pytest && \
-            pytest -v && \
-            deactivate'
+            arm64v8/ubuntu \
+            bash -exc 'apt update && \
+            uname -m && \
+            apt-get install sudo && \
+            sudo apt-get install libxcb-xkb-dev xvfb && \
+            sudo apt-get install -y libmariadbclient-dev && \
+            python3 --version && \
+            python3.8 -m pip install --upgrade pip setuptools wheel && \
+            python3.8 -m pip install -e . && \
+            python3.8 -m pip install --prefer-binary -r requirements-test-libraries.txt && \
+            python3.8 -m pip install ${{ matrix.pyinstaller }} && \
+            python3.8 -m pip install pytest && \
+            python3.8 -m pytest -v'
