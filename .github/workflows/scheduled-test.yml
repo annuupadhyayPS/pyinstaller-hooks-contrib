@@ -101,7 +101,7 @@ jobs:
             bash -exc 'apt update && \
             uname -m && \
             apt-get install sudo && \
-            sudo apt-get install libxcb-xkb-dev xvfb && \
+            sudo apt-get install -y libxcb-xkb-dev xvfb && \
             sudo apt-get install -y libmariadbclient-dev && \
             python3 --version && \
             python3.8 -m pip install --upgrade pip setuptools wheel && \
