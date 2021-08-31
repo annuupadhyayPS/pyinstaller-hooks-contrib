@@ -98,19 +98,17 @@ jobs:
       run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
             arm64v8/ubuntu \
-            bash -exc '${{ env.py }} -m venv .env && \
-            source .env/bin/activate && \
-            python3 -m apt update && \
+            bash -exc 'apt update && \
             uname -m && \
             apt-get install sudo && \
             sudo apt-get install -y libxcb-xkb-dev xvfb && \
             sudo apt-get install -y libmariadbclient-dev && \
-            sudo apt-get install -y python3.8 && \
-            sudo apt-get install python3.8-pip && \
+            sudo apt-get -y install python3.8 && \
+            sudo apt-get -y install python3-pip && \
+            python3 --version && \
             python3 -m pip install --upgrade pip setuptools wheel && \
             python3 -m pip install -e . && \
             python3 -m pip install --prefer-binary -r requirements-test-libraries.txt && \
             python3 -m pip install ${{ matrix.pyinstaller }} && \
             python3 -m pip install pytest && \
-            python3 -m pytest -v && \
-            deactivate'
+            python3 -m pytest -v'
