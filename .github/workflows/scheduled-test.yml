@@ -90,9 +90,8 @@ jobs:
       run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
             quay.io/pypa/manylinux2014_aarch64 \
-            bash -exc 'apt-get install sudo && \
-            sudo apt-get install libxcb-xkb-dev xvfb && \
-            sudo apt-get install -y libmariadbclient-dev && \
+            bash -exc 'yum install -y libxcb-xkb-dev xvfb && \
+            yum install -y libmariadbclient-dev && \
             ${{ env.py }} -m venv .env && \
             source .env/bin/activate && \
             python -m pip install --upgrade pip setuptools wheel && \
