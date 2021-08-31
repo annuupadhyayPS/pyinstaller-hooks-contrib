@@ -99,7 +99,7 @@ jobs:
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
             arm64v8/ubuntu \
             bash -exc 'apt update && \
-            apt-get install git && \
+            apt-get install -y git && \
             uname -m && \
             apt-get install sudo && \
             sudo apt-get install -y libxcb-xkb-dev xvfb && \
