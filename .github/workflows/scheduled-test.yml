@@ -91,7 +91,6 @@ jobs:
       uses: docker/setup-qemu-action@v1
     
     - name: Install all dependencies
-      if: startsWith(matrix.os, 'ubuntu')
       run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
             quay.io/pypa/manylinux2014_aarch64 \
