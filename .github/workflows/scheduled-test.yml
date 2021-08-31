@@ -81,10 +81,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Checkout submodules
-      run: |
-        git submodule init
-        git submodule update  
     
     - name: Set up QEMU
       id: qemu
@@ -94,7 +90,7 @@ jobs:
       run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
             quay.io/pypa/manylinux2014_aarch64 \
-            bash -exc '${{ env.py }} -m venv .env && \
+            bash -exc 'python -m venv .env && \
             source .env/bin/activate && \
             sudo apt-get install libxcb-xkb-dev xvfb && \
             Xvfb :99 & echo "DISPLAY=:99" >> $GITHUB_ENV && \
